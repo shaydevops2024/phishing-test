@@ -71,7 +71,7 @@ def submit():
     work_email = request.form.get("work_email", "").strip()
     ip = client_ip()
 
-    if full_name and work_email:
+    if work_email:
         try:
             conn = get_conn()
             cur = conn.cursor()
