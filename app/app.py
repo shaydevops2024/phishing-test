@@ -94,6 +94,11 @@ def gotcha():
     return render_template("gotcha.html", report_email=REPORT_EMAIL)
 
 
+@app.route("/tips")
+def tips():
+    return render_template("tips.html", report_email=REPORT_EMAIL)
+
+
 @app.route("/health")
 def health():
     return "ok", 200

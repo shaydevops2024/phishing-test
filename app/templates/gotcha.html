@@ -78,7 +78,7 @@
       <p>No data was leaked and nothing bad happened. Please report at:
         <a href="mailto:{{ report_email }}">{{ report_email }}</a>
       </p>
-      <button onclick="document.getElementById('overlay').classList.remove('show')">Got it</button>
+      <button onclick="window.location.href='/tips'">How can I avoid this in the future?</button>
     </div>
   </div>
 
@@ -95,10 +95,10 @@
     tick();
     setInterval(tick, 1000);
 
-    // Reveal the "just kidding" popup after 5 seconds.
+    // Reveal the "just kidding" popup after 4 seconds.
     setTimeout(function () {
       document.getElementById("overlay").classList.add("show");
-    }, 5000);
+    }, 4000);
   </script>
 </body>
 </html>
