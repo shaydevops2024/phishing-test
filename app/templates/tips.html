@@ -5,118 +5,218 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>How to spot a phishing attack</title>
   <style>
+    :root {
+      --orange: #ea7a2a;
+      --orange-dark: #d2641a;
+      --ink: #1c2733;
+      --muted: #5a6b7b;
+      --line: #eef1f4;
+      --red: #e10600;
+      --green: #1e8449;
+    }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       font-family: "Segoe UI", Arial, sans-serif;
-      background: #f0f2f5;
-      color: #1c2733;
+      background: #ffffff;
+      color: var(--ink);
       line-height: 1.6;
     }
+
+    /* ---------- Orange top bar with logo ---------- */
     .topbar {
-      background: #0b5394;
-      color: #fff;
-      padding: 16px 24px;
-      font-size: 20px;
-      font-weight: 700;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: linear-gradient(90deg, var(--orange) 0%, var(--orange-dark) 100%);
+      box-shadow: 0 2px 16px rgba(210,100,26,.35);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 22px;
     }
-    .wrap { max-width: 820px; margin: 32px auto; padding: 0 18px; }
-    .card {
+    .logo-chip {
       background: #fff;
       border-radius: 10px;
-      box-shadow: 0 2px 14px rgba(0,0,0,.08);
-      padding: 28px 32px;
+      padding: 7px 12px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+    .logo-chip img { height: 34px; display: block; }
+    .topbar .title {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: .3px;
+      text-shadow: 0 1px 2px rgba(0,0,0,.15);
+    }
+
+    /* ---------- Layout ---------- */
+    .wrap { max-width: 860px; margin: 0 auto; padding: 36px 18px 60px; }
+
+    /* ---------- Hero ---------- */
+    .hero { text-align: center; margin-bottom: 34px; }
+    .hero .emoji {
+      font-size: 58px;
+      display: inline-block;
+      animation: bob 2.4s ease-in-out infinite;
+    }
+    @keyframes bob {
+      0%,100% { transform: translateY(0) rotate(-6deg); }
+      50%     { transform: translateY(-10px) rotate(6deg); }
+    }
+    .hero h1 {
+      font-size: 32px;
+      margin: 10px 0 10px;
+      background: linear-gradient(90deg, var(--ink), var(--orange-dark));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p { color: var(--muted); font-size: 16px; max-width: 620px; margin: 0 auto; }
+
+    /* ---------- Cards ---------- */
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 6px 22px rgba(20,40,60,.06);
+      padding: 26px 30px;
       margin-bottom: 22px;
     }
-    h1 { font-size: 26px; margin: 0 0 8px; }
-    h2 { font-size: 19px; margin: 26px 0 8px; color: #0b5394; }
-    .lead { color: #5a6b7b; font-size: 15px; margin: 0 0 4px; }
+    h2 {
+      font-size: 20px;
+      margin: 0 0 6px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    h2 .bar { width: 6px; height: 22px; border-radius: 3px; background: var(--orange); }
+
+    /* ---------- Red-flag rows ---------- */
     .flag {
       display: flex;
-      gap: 14px;
-      padding: 16px 0;
-      border-top: 1px solid #eef1f4;
+      gap: 16px;
+      padding: 20px 0;
+      border-top: 1px solid var(--line);
     }
     .flag:first-of-type { border-top: none; }
     .num {
-      flex: 0 0 34px;
-      height: 34px;
-      width: 34px;
+      flex: 0 0 38px; height: 38px; width: 38px;
       border-radius: 50%;
-      background: #e10600;
-      color: #fff;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
+      background: linear-gradient(135deg, var(--red), #ff5b54);
+      color: #fff; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 4px 12px rgba(225,6,0,.35);
     }
-    .flag h3 { margin: 4px 0 4px; font-size: 16px; }
+    .flag h3 { margin: 6px 0 4px; font-size: 16.5px; }
     .flag p { margin: 0; font-size: 14.5px; color: #3d4b59; }
     code {
-      background: #f3f5f8;
-      border: 1px solid #e0e5ea;
+      background: #fff5ee;
+      border: 1px solid #f5d6bd;
       border-radius: 4px;
       padding: 1px 6px;
       font-family: "Courier New", monospace;
       font-size: 13.5px;
     }
-    .bad { color: #c0392b; font-weight: 600; }
-    .good { color: #1e8449; font-weight: 600; }
+    .bad { color: #c0392b; font-weight: 700; }
+    .good { color: var(--green); font-weight: 700; }
     .shot {
       width: 100%;
       border: 1px solid #d4dae0;
-      border-radius: 8px;
-      margin-top: 10px;
+      border-radius: 10px;
+      margin-top: 12px;
+      transition: transform .35s ease, box-shadow .35s ease;
     }
-    .caption { font-size: 13px; color: #7a8794; margin-top: 6px; }
-    ul.checklist { margin: 8px 0 0; padding-left: 0; list-style: none; }
-    ul.checklist li { padding: 6px 0 6px 28px; position: relative; font-size: 14.5px; }
+    .shot:hover { transform: scale(1.015); box-shadow: 0 10px 30px rgba(20,40,60,.18); }
+    .caption { font-size: 13px; color: #7a8794; margin-top: 8px; }
+
+    /* ---------- Checklist ---------- */
+    ul.checklist { margin: 10px 0 0; padding-left: 0; list-style: none; }
+    ul.checklist li {
+      padding: 9px 0 9px 34px; position: relative; font-size: 14.5px;
+      border-bottom: 1px dashed var(--line);
+    }
+    ul.checklist li:last-child { border-bottom: none; }
     ul.checklist li::before {
       content: "✓";
-      position: absolute;
-      left: 0;
-      color: #1e8449;
-      font-weight: 700;
+      position: absolute; left: 0; top: 8px;
+      height: 22px; width: 22px; border-radius: 50%;
+      background: #e8f6ee; color: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 13px;
     }
+
+    /* ---------- "When unsure" highlight ---------- */
+    .unsure {
+      background: linear-gradient(135deg, #fff6ee, #ffe9d6);
+      border: 1px solid #f3c79c;
+      border-left: 6px solid var(--orange);
+    }
+    .unsure h2 { color: var(--orange-dark); }
+
+    /* ---------- Report ---------- */
     .report {
       background: #eaf3fb;
       border: 1px solid #b9d6ef;
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 16px 18px;
       font-size: 15px;
     }
     .report a { color: #0b5394; font-weight: 700; }
     .back {
       display: inline-block;
-      margin-top: 4px;
-      background: #0b5394;
-      color: #fff;
-      text-decoration: none;
-      padding: 11px 18px;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 14px;
+      margin-top: 18px;
+      background: linear-gradient(90deg, var(--orange), var(--orange-dark));
+      color: #fff; text-decoration: none;
+      padding: 12px 22px; border-radius: 8px;
+      font-weight: 700; font-size: 14.5px;
+      box-shadow: 0 6px 16px rgba(210,100,26,.35);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .back:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(210,100,26,.45); }
+
+    /* ---------- Scroll-reveal animation ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .hero .emoji { animation: none; }
     }
   </style>
 </head>
 <body>
-  <div class="topbar">Security Awareness</div>
+  <div class="topbar">
+    <div class="logo-chip">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="iConduct" />
+    </div>
+    <span class="title">Security Awareness</span>
+  </div>
+
   <div class="wrap">
 
-    <div class="card">
-      <h1>How to spot a phishing attack 🎣</h1>
-      <p class="lead">
-        You just went through a simulated phishing test. No harm done — here's how
+    <div class="hero reveal">
+      <span class="emoji">🎣</span>
+      <h1>How to spot a phishing attack</h1>
+      <p>
+        You just went through a simulated phishing test — no harm done. Here's how
         you could have caught it, using the <strong>exact</strong> signs from the
         email and page you just saw.
       </p>
     </div>
 
-    <div class="card">
-      <h2>The red flags in this attack</h2>
+    <div class="card reveal">
+      <h2><span class="bar"></span> The red flags in this attack</h2>
 
-      <div class="flag">
+      <div class="flag reveal">
         <div class="num">1</div>
         <div>
           <h3>The sender's name didn't match the email</h3>
@@ -131,7 +231,7 @@
         </div>
       </div>
 
-      <div class="flag">
+      <div class="flag reveal">
         <div class="num">2</div>
         <div>
           <h3>The web address (URL) was wrong</h3>
@@ -147,7 +247,7 @@
         </div>
       </div>
 
-      <div class="flag">
+      <div class="flag reveal">
         <div class="num">3</div>
         <div>
           <h3>The login page didn't look like the real one</h3>
@@ -164,22 +264,10 @@
           </p>
         </div>
       </div>
-
-      <div class="flag">
-        <div class="num">4</div>
-        <div>
-          <h3>It created urgency and pressure</h3>
-          <p>
-            "Verify before your salary is processed" is a classic trick — phishing
-            relies on fear and time pressure so you act before you think.
-            Legitimate IT/HR processes don't threaten to withhold your pay over a link.
-          </p>
-        </div>
-      </div>
     </div>
 
-    <div class="card">
-      <h2>Your quick checklist before clicking or logging in</h2>
+    <div class="card reveal">
+      <h2><span class="bar"></span> Your quick checklist before clicking or logging in</h2>
       <ul class="checklist">
         <li>Hover over links to preview the real destination before clicking.</li>
         <li>Read the full sender address — watch for misspellings and look-alikes.</li>
@@ -190,16 +278,65 @@
       </ul>
     </div>
 
-    <div class="card">
+    <div class="card unsure reveal">
+      <h2><span class="bar"></span> When you're not sure — ask</h2>
+      <p>
+        If anything about a message, link, or login page seems off and you can't be
+        completely certain it's genuine, <strong>do not proceed</strong>. Before
+        entering any credentials or clicking through, reach out to the company's
+        <strong>DevOps or IT team</strong> and confirm that it's legitimate.
+      </p>
+      <p style="margin-top:10px;">
+        There is no such thing as a silly question here — the team would far rather
+        answer a quick "is this real?" than deal with a compromised account.
+        When in doubt, check first.
+      </p>
+    </div>
+
+    <div class="card reveal">
       <div class="report">
         🛡️ <strong>Spotted a real phishing email?</strong> Report it right away to
         <a href="mailto:{{ report_email }}">{{ report_email }}</a>.
       </div>
-      <p style="margin-top:18px;">
-        <a class="back" href="/">Back to start</a>
-      </p>
+      <div style="text-align:center;">
+        <a class="back" href="/finish">Finish the simulation</a>
+      </div>
     </div>
 
   </div>
+
+  <footer style="text-align:center;padding:22px;color:#9aa7b3;font-size:13px;line-height:1.5;">
+    This page was created by Shay Guedj<br />Devops Engineer
+  </footer>
+
+  <script>
+    // Lightweight, dependency-free "alive" behaviour: reveal elements as they
+    // scroll into view, with a staggered delay for a lively cascade.
+    (function () {
+      var items = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+
+      if (!("IntersectionObserver" in window)) {
+        items.forEach(function (el) { el.classList.add("visible"); });
+        return;
+      }
+
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            var delay = parseInt(el.getAttribute("data-delay") || "0", 10);
+            setTimeout(function () { el.classList.add("visible"); }, delay);
+            io.unobserve(el);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      // Stagger siblings inside each card for a cascading effect.
+      items.forEach(function (el, i) {
+        el.setAttribute("data-delay", String((i % 4) * 90));
+        io.observe(el);
+      });
+    })();
+  </script>
 </body>
 </html>

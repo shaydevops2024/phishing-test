@@ -1,0 +1,42 @@
+# Local development stack — runs the app over plain HTTP on your machine,
+# with NO Caddy / HTTPS (TLS certs require a public domain, which localhost
+# can't have). Use this for testing the UI and flow locally.
+#
+#   docker compose -f docker-compose.local.yml up -d --build
+#   open http://localhost:8080/
+#
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata_local:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build: ./app
+    restart: unless-stopped
+    # Published directly to the host — no reverse proxy in front.
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      REPORT_EMAIL: ${REPORT_EMAIL}
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata_local:

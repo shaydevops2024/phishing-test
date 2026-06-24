@@ -99,6 +99,11 @@ def tips():
     return render_template("tips.html", report_email=REPORT_EMAIL)
 
 
+@app.route("/finish")
+def finish():
+    return render_template("finish.html", report_email=REPORT_EMAIL)
+
+
 @app.route("/health")
 def health():
     return "ok", 200
