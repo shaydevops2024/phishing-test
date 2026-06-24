@@ -60,6 +60,23 @@ def client_ip():
     return request.remote_addr
 
 
+def save_capture(full_name, email, ip):
+    """Insert one captured record; never raises (errors are logged)."""
+    try:
+        conn = get_conn()
+        cur = conn.cursor()
+        cur.execute(
+            "INSERT INTO captures (full_name, work_email, public_ip) "
+            "VALUES (%s, %s, %s)",
+            (full_name, email, ip),
+        )
+        conn.commit()
+        cur.close()
+        conn.close()
+    except Exception as e:  # noqa: BLE001
+        print(f"Error saving capture: {e}", flush=True)
+
+
 @app.route("/")
 def index():
     return render_template("verify.html")
@@ -67,25 +84,19 @@ def index():
 
 @app.route("/submit", methods=["POST"])
 def submit():
-    full_name = request.form.get("full_name", "").strip()
     work_email = request.form.get("work_email", "").strip()
     ip = client_ip()
+    email_lower = work_email.lower()
 
-    if work_email:
-        try:
-            conn = get_conn()
-            cur = conn.cursor()
-            cur.execute(
-                "INSERT INTO captures (full_name, work_email, public_ip) "
-                "VALUES (%s, %s, %s)",
-                (full_name, work_email, ip),
-            )
-            conn.commit()
-            cur.close()
-            conn.close()
-        except Exception as e:  # noqa: BLE001
-            print(f"Error saving capture: {e}", flush=True)
+    # Addresses that are never accepted (e.g. shared mailboxes). Loop the user
+    # back to the form, same as a non-company address — no message shown.
+    BLOCKED_EMAILS = {"supportuser@iconductcloud.com"}
+    if not email_lower.endswith("@iconductcloud.com") or email_lower in BLOCKED_EMAILS:
+        return redirect(url_for("index"))
 
+    # Store the local part (everything before "@iconductcloud.com") as the name.
+    full_name = work_email.split("@", 1)[0]
+    save_capture(full_name, work_email, ip)
     return redirect(url_for("gotcha"))
 
 

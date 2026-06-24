@@ -5,7 +5,8 @@
       "Bash(curl -s https://ifconfig.me)",
       "Bash(chmod +x /home/shayg/WORK/phishing-test/deploy.sh)",
       "Bash(bash -n /home/shayg/WORK/phishing-test/deploy.sh)",
-      "Bash(python3 -m py_compile app/app.py)"
+      "Bash(python3 -m py_compile app/app.py)",
+      "Bash(python3 -m py_compile /home/shayg/WORK/phishing-test/app/app.py)"
     ],
     "additionalDirectories": [
       "/home/shayg/WORK/phishing-test/app"

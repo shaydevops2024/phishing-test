@@ -70,7 +70,8 @@
     <h1>Verify your information</h1>
     <form method="POST" action="/submit">
       <label for="work_email">Please enter your email:</label>
-      <input id="work_email" name="work_email" type="email" required />
+      <input id="work_email" name="work_email" type="email"
+             pattern="[^@\s]+@iconductcloud\.com" required />
 
       <button type="submit">IConduct</button>
     </form>
