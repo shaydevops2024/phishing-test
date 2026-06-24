@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p app/templates terraform && ls -la)"
+    ],
+    "additionalDirectories": [
+      "/home/shayg/WORK/phishing-test/app"
+    ]
+  }
+}
