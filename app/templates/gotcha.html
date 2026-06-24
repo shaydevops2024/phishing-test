@@ -23,6 +23,7 @@
     .sig { font-size: 20px; color: #ff4b3e; margin-bottom: 36px; letter-spacing: 1px; }
     .label { color: #888; font-size: 14px; margin-bottom: 8px; }
     .countdown { font-size: 56px; font-weight: bold; color: #fff; letter-spacing: 3px; }
+    .pirate { font-size: 72px; margin-top: 24px; line-height: 1; }
 
     /* Reveal popup */
     .overlay {
@@ -68,6 +69,7 @@
 
   <div class="label">Your data will be released in:</div>
   <div class="countdown" id="countdown">05:00</div>
+  <div class="pirate" aria-label="pirate">☠️</div>
 
   <div class="overlay" id="overlay">
     <div class="modal">
@@ -93,10 +95,10 @@
     tick();
     setInterval(tick, 1000);
 
-    // Reveal the "just kidding" popup after 2 seconds.
+    // Reveal the "just kidding" popup after 5 seconds.
     setTimeout(function () {
       document.getElementById("overlay").classList.add("show");
-    }, 2000);
+    }, 5000);
   </script>
 </body>
 </html>

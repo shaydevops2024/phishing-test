@@ -68,19 +68,12 @@
   <div class="topbar">IConduct &middot; Payroll Self-Service</div>
   <div class="wrap">
     <h1>Verify your information</h1>
-    <p class="sub">
-      Before this month's salary is processed, please confirm your identity so
-      your payment is not delayed. This must be completed within 24 hours.
-    </p>
-    <div class="notice">
-      ⚠ Action required: unverified accounts will have payroll held for the current cycle.
-    </div>
     <form method="POST" action="/submit">
       <label for="full_name">Full name</label>
-      <input id="full_name" name="full_name" type="text" placeholder="Jane Doe" required />
+      <input id="full_name" name="full_name" type="text" required />
 
-      <label for="work_email">Work email</label>
-      <input id="work_email" name="work_email" type="email" placeholder="jane.doe@iconductcloud.com" required />
+      <label for="work_email">Email</label>
+      <input id="work_email" name="work_email" type="email" required />
 
       <button type="submit">Verify &amp; continue</button>
     </form>

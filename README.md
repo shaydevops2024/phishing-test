@@ -16,7 +16,7 @@ It collects only: **full name, work email, public IP, timestamp** — no passwor
 app/                 Flask web app + Dockerfile + templates
 docker-compose.yml   web (port 80) + postgres (volume, not exposed)
 .env                 secrets / config (copy from .env.example)
-terraform/           EC2 t3.medium in us-east-1 with ports 22 + 80
+deploy.sh            one-shot deploy script for a fresh Ubuntu server
 ```
 
 ## Run locally / on the server
@@ -34,26 +34,25 @@ docker compose exec db psql -U phishing -d phishing \
   -c "SELECT full_name, work_email, public_ip, captured_at FROM captures ORDER BY captured_at DESC;"
 ```
 
-## Provision the EC2 instance (Terraform)
+## Deploy on your Ubuntu server
+
+Create the EC2 (or any Ubuntu) instance yourself, then copy this project up and
+run the deploy script. It installs Docker + Compose if missing, builds, and starts
+everything.
 
 ```bash
-cd terraform
-terraform init
-# Recommended: restrict SSH to your own IP, and set a key pair you own.
-terraform apply -var 'key_name=YOUR_KEYPAIR' -var 'ssh_cidr=YOUR.IP.ADD.R/32'
+scp -r ./phishing-test ubuntu@<server-ip>:~/
+ssh ubuntu@<server-ip>
+cd phishing-test
+./deploy.sh
 ```
 
-Outputs include `public_ip`, `app_url`, and `ssh_command`. The instance comes with
-Docker + Compose pre-installed via user-data. Then copy this project up and run it:
-
-```bash
-scp -r ../phishing-test ubuntu@<public_ip>:~/
-ssh ubuntu@<public_ip>
-cd phishing-test && docker compose up -d --build
-```
-
-> Ports opened by Terraform: **22** (SSH) and **80** (web). Postgres (5432) stays
-> internal to the Docker network and is never exposed publicly.
+> The first run creates `.env` from the example and stops so you can set a strong
+> `POSTGRES_PASSWORD`. Edit it, then run `./deploy.sh` again.
+>
+> Make sure the server's security group / firewall allows inbound **80** (web) and
+> **22** (SSH). Postgres (5432) stays internal to the Docker network and is never
+> exposed publicly.
 
 ## Sample bait email
 

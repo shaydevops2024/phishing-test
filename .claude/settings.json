@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(mkdir -p app/templates terraform && ls -la)"
+      "Bash(mkdir -p app/templates terraform && ls -la)",
+      "Bash(curl -s https://ifconfig.me)",
+      "Bash(chmod +x /home/shayg/WORK/phishing-test/deploy.sh)",
+      "Bash(bash -n /home/shayg/WORK/phishing-test/deploy.sh)"
     ],
     "additionalDirectories": [
       "/home/shayg/WORK/phishing-test/app"
