@@ -19,8 +19,9 @@ services:
   web:
     build: ./app
     restart: always
-    ports:
-      - "80:8080"
+    # No host port published — traffic comes in through Caddy (TLS) only.
+    expose:
+      - "8080"
     environment:
       DB_HOST: db
       DB_PORT: 5432
@@ -32,5 +33,22 @@ services:
       db:
         condition: service_healthy
 
+  caddy:
+    image: caddy:2
+    restart: always
+    ports:
+      - "80:80"    # HTTP (Caddy redirects to HTTPS + serves ACME challenge)
+      - "443:443"  # HTTPS
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data      # persists the TLS certificates
+      - caddy_config:/config
+    depends_on:
+      - web
+
 volumes:
   pgdata:
+  caddy_data:
+  caddy_config:

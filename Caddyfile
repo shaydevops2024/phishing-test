@@ -1,0 +1,6 @@
+# Caddy auto-provisions a free Let's Encrypt TLS cert for this domain
+# and redirects HTTP -> HTTPS automatically.
+# SITE_DOMAIN is supplied from .env (e.g. dotproject.duckdns.org).
+{$SITE_DOMAIN} {
+    reverse_proxy web:8080
+}
